@@ -1,10 +1,10 @@
-import TodoList from "./todoList/page";
+import Link from "next/link";
 
 export default function Home() {
   return (
     <main>
       <div>
-        <TodoList></TodoList>
+        <Link href="/todoList">Todos</Link>
       </div>
     </main>
   );

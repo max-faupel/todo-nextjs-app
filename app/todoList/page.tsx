@@ -6,6 +6,7 @@ import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
+import Link from "next/link";
 
 async function getData() {
   const res = await fetch("http://localhost:3200/todos");
@@ -21,25 +22,28 @@ export default async function TodoList() {
   const data = await getData();
 
   return (
-    <TableContainer component={Paper}>
-      <Table aria-label="todo table">
-        <TableHead>
-          <TableRow>
-            <TableCell>Beschreibung</TableCell>
-            <TableCell>Erledigt</TableCell>
-            <TableCell>Datum bis</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {data.map((row) => (
-            <TableRow key={row._id}>
-              <TableCell>{row.description}</TableCell>
-              <TableCell>{row.done}</TableCell>
-              <TableCell>{row.targetDate}</TableCell>
+    <div>
+      <Link href="/">Home</Link>
+      <TableContainer>
+        <Table aria-label="Todos">
+          <TableHead>
+            <TableRow>
+              <TableCell>Beschreibung</TableCell>
+              <TableCell>Erledigt</TableCell>
+              <TableCell>Datum bis</TableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </TableContainer>
+          </TableHead>
+          <TableBody>
+            {data.map((row) => (
+              <TableRow key={row._id}>
+                <TableCell>{row.description}</TableCell>
+                <TableCell>{row.done}</TableCell>
+                <TableCell>{row.targetDate}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </div>
   );
 }
