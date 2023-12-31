@@ -7,6 +7,8 @@ import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
 import Paper from "@mui/material/Paper";
 import Link from "next/link";
+import CloseIcon from "@mui/icons-material/Close";
+import CheckIcon from "@mui/icons-material/Check";
 
 async function getData() {
   const res = await fetch("http://localhost:3200/todos");
@@ -18,13 +20,20 @@ async function getData() {
   return data as any[];
 }
 
+function DoneIcon({ isDone }: { isDone: boolean }) {
+  if (isDone) {
+    return <CheckIcon></CheckIcon>;
+  }
+  return <CloseIcon></CloseIcon>;
+}
+
 export default async function TodoList() {
   const data = await getData();
 
   return (
     <div>
       <Link href="/">Home</Link>
-      <TableContainer>
+      <TableContainer component={Paper}>
         <Table aria-label="Todos">
           <TableHead>
             <TableRow>
@@ -35,9 +44,14 @@ export default async function TodoList() {
           </TableHead>
           <TableBody>
             {data.map((row) => (
-              <TableRow key={row._id}>
+              <TableRow
+                key={row._id}
+                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+              >
                 <TableCell>{row.description}</TableCell>
-                <TableCell>{row.done}</TableCell>
+                <TableCell>
+                  <DoneIcon isDone={row.done}></DoneIcon>
+                </TableCell>
                 <TableCell>{row.targetDate}</TableCell>
               </TableRow>
             ))}
