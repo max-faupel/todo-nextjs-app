@@ -4,7 +4,7 @@ export default function Home() {
   return (
     <main>
       <div>
-        <Link href="/todoList">Todos</Link>
+        <Link href="/todo">Todos</Link>
       </div>
     </main>
   );

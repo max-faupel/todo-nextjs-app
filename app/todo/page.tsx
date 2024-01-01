@@ -9,6 +9,9 @@ import Paper from "@mui/material/Paper";
 import Link from "next/link";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
+import { Button, ButtonGroup, Stack } from "@mui/material";
+import { Todo } from "../_models/todo";
+import dayjs from "dayjs";
 
 async function getData() {
   const res = await fetch("http://localhost:3200/todos");
@@ -17,7 +20,7 @@ async function getData() {
   }
 
   const data = await res.json();
-  return data as any[];
+  return data as Todo[];
 }
 
 function DoneIcon({ isDone }: { isDone: boolean }) {
@@ -40,6 +43,7 @@ export default async function TodoList() {
               <TableCell>Beschreibung</TableCell>
               <TableCell>Erledigt</TableCell>
               <TableCell>Datum bis</TableCell>
+              <TableCell>Aktionen</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
@@ -52,7 +56,14 @@ export default async function TodoList() {
                 <TableCell>
                   <DoneIcon isDone={row.done}></DoneIcon>
                 </TableCell>
-                <TableCell>{row.targetDate}</TableCell>
+                <TableCell>{row.targetDate.toString()}</TableCell>
+                <TableCell>
+                  <Stack spacing={2} direction="row">
+                    <Button variant="contained" href={`/todo/${row._id}`}>
+                      Bearbeiten
+                    </Button>
+                  </Stack>
+                </TableCell>
               </TableRow>
             ))}
           </TableBody>
