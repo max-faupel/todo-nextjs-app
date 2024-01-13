@@ -1,27 +1,17 @@
-import * as React from "react";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import { Box, Button, Stack } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
+import "dayjs/locale/de";
 import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckIcon from "@mui/icons-material/Check";
-import { Button, ButtonGroup, Stack } from "@mui/material";
+import { useEffect, useState } from "react";
 import { Todo } from "../_models/todo";
-import dayjs from "dayjs";
-
-async function getData() {
-  const res = await fetch("http://localhost:3200/todos");
-  if (!res.ok) {
-    throw new Error("Failed to fetch data");
-  }
-
-  const data = await res.json();
-  return data as Todo[];
-}
 
 function DoneIcon({ isDone }: { isDone: boolean }) {
   if (isDone) {
@@ -30,12 +20,32 @@ function DoneIcon({ isDone }: { isDone: boolean }) {
   return <CloseIcon></CloseIcon>;
 }
 
-export default async function TodoList() {
-  const data = await getData();
+export default function TodoList() {
+  const [data, setData] = useState<Todo[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch("http://localhost:3200/todos");
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+      const result = await response.json();
+      setData(result);
+    };
+
+    fetchData().catch((e) => {
+      console.error("An error occurred while fetching the data: ", e);
+    });
+  }, []);
 
   return (
     <div>
       <Link href="/">Home</Link>
+      <Box sx={{ m: 2 }}>
+        <Button variant="contained" href="/todo/0">
+          Neu
+        </Button>
+      </Box>
       <TableContainer component={Paper}>
         <Table aria-label="Todos">
           <TableHead>
