@@ -1,17 +1,14 @@
-import * as React from "react";
+import CheckIcon from "@mui/icons-material/Check";
+import CloseIcon from "@mui/icons-material/Close";
+import { Button, Stack } from "@mui/material";
+import Paper from "@mui/material/Paper";
 import Table from "@mui/material/Table";
 import TableBody from "@mui/material/TableBody";
 import TableCell from "@mui/material/TableCell";
 import TableContainer from "@mui/material/TableContainer";
 import TableHead from "@mui/material/TableHead";
 import TableRow from "@mui/material/TableRow";
-import Paper from "@mui/material/Paper";
-import Link from "next/link";
-import CloseIcon from "@mui/icons-material/Close";
-import CheckIcon from "@mui/icons-material/Check";
-import { Button, ButtonGroup, Stack } from "@mui/material";
 import { Todo } from "../_models/todo";
-import dayjs from "dayjs";
 
 async function getData() {
   const res = await fetch("http://localhost:3200/todos");
@@ -35,7 +32,9 @@ export default async function TodoList() {
 
   return (
     <div>
-      <Link href="/">Home</Link>
+      <Button variant="contained" href="/todo/create">
+        Neu
+      </Button>
       <TableContainer component={Paper}>
         <Table aria-label="Todos">
           <TableHead>
