@@ -3,9 +3,9 @@ import Link from "next/link";
 export default function Home() {
   return (
     <main>
-      <div>
-        <Link href="/todo">Todos</Link>
-      </div>
+      <Link className="btn btn-primary" href="/todo">
+        Todos
+      </Link>
     </main>
   );
 }

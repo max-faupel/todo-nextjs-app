@@ -1,17 +1,8 @@
-import CheckIcon from "@mui/icons-material/Check";
-import CloseIcon from "@mui/icons-material/Close";
-import { Button, Stack } from "@mui/material";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
+import Link from "next/link";
 import { Todo } from "../_models/todo";
 
 async function getData() {
-  const res = await fetch("http://localhost:3200/todos");
+  const res = await fetch("http://localhost:3200/todos", { cache: "no-store" });
   if (!res.ok) {
     throw new Error("Failed to fetch data");
   }
@@ -20,54 +11,55 @@ async function getData() {
   return data as Todo[];
 }
 
-function DoneIcon({ isDone }: { isDone: boolean }) {
-  if (isDone) {
-    return <CheckIcon></CheckIcon>;
-  }
-  return <CloseIcon></CloseIcon>;
-}
-
 export default async function TodoList() {
   const data = await getData();
 
   return (
-    <div>
-      <Button variant="contained" href="/todo/create">
-        Neu
-      </Button>
-      <TableContainer component={Paper}>
-        <Table aria-label="Todos">
-          <TableHead>
-            <TableRow>
-              <TableCell>Beschreibung</TableCell>
-              <TableCell>Erledigt</TableCell>
-              <TableCell>Datum bis</TableCell>
-              <TableCell>Aktionen</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
+    <main>
+      <div>
+        <Link className="btn btn-primary" href="/todo/create">
+          New
+        </Link>
+
+        <table className="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th>
+                <p>Beschreibung</p>
+              </th>
+              <th>
+                <p>Erledigt</p>
+              </th>
+              <th>
+                <p>Datum bis</p>
+              </th>
+              <th>
+                <p>Aktionen</p>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
             {data.map((row) => (
-              <TableRow
-                key={row._id}
-                sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
-              >
-                <TableCell>{row.description}</TableCell>
-                <TableCell>
-                  <DoneIcon isDone={row.done}></DoneIcon>
-                </TableCell>
-                <TableCell>{row.targetDate.toString()}</TableCell>
-                <TableCell>
-                  <Stack spacing={2} direction="row">
-                    <Button variant="contained" href={`/todo/${row._id}`}>
-                      Bearbeiten
-                    </Button>
-                  </Stack>
-                </TableCell>
-              </TableRow>
+              <tr key={row._id}>
+                <td>
+                  <p>{row.description}</p>
+                </td>
+                <td>
+                  <p>{row.done}</p>
+                </td>
+                <td>
+                  <p>{row.targetDate.toString()}</p>
+                </td>
+                <td className="p-4">
+                  <Link className="btn btn-primary" href={`/todo/${row._id}`}>
+                    Bearbeiten
+                  </Link>
+                </td>
+              </tr>
             ))}
-          </TableBody>
-        </Table>
-      </TableContainer>
-    </div>
+          </tbody>
+        </table>
+      </div>
+    </main>
   );
 }
